@@ -3,68 +3,230 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>My Clothing Store</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/simplecart/3.0.6/simplecart.min.js"></script>
-  <script>
-    simpleCart({
-      cartColumns: [
-        { attr: "name", label: "Name" },
-        { attr: "price", label: "Price", view: 'currency' },
-        { view: "decrement", label: false, text: "-" },
-        { attr: "quantity", label: "Qty" },
-        { view: "increment", label: false, text: "+" },
-        { attr: "total", label: "SubTotal", view: 'currency' },
-        { view: "remove", text: "Remove", label: false }
-      ],
-      cartStyle: "table",
-      checkout: {
-        type: "SendForm",
-        url: "https://formsubmit.co/kuuberastore@gmail.com"
-      },
-      currency: "INR"
-    });
-  </script>
+  <title>Elegant Clothing Store</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f9f9f9;
+      color: #333;
+    }
+    header {
+      background: #8e44ad;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    main {
+      padding: 20px;
+      max-width: 1000px;
+      margin: auto;
+    }
+    .product-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+    }
+    .product {
+      background: white;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    .product h3 {
+      margin: 10px 0;
+    }
+    .product button {
+      background: #8e44ad;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .product button:hover {
+      background: #732d91;
+    }
+    .cart {
+      margin-top: 40px;
+      background: #fff;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .cart h2 {
+      margin-top: 0;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    th, td {
+      padding: 10px;
+      border-bottom: 1px solid #ccc;
+      text-align: center;
+    }
+    .remove-btn {
+      background: #e74c3c;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .remove-btn:hover {
+      background: #c0392b;
+    }
+    .checkout-form {
+      margin-top: 30px;
+    }
+    .checkout-form input, .checkout-form textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .checkout-form button {
+      background: #8e44ad;
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 25px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    .checkout-form button:hover {
+      background: #732d91;
+    }
+  </style>
 </head>
-<body class="bg-gray-100 text-gray-800">
-  <header class="bg-white shadow p-4">
-    <h1 class="text-2xl font-bold text-center">My Clothing Store</h1>
-  </header>
+<body>
+  <header>Elegant Clothing Store</header>
+  <main>
+    <section class="product-list" id="product-list"></section>
 
-  <main class="p-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-    <!-- Example Product -->
-    <div class="bg-white p-4 rounded shadow text-center">
-      <img src="https://via.placeholder.com/200" alt="T-Shirt" class="mx-auto mb-2">
-      <h2 class="font-semibold text-lg">Classic T-Shirt</h2>
-      <p class="text-gray-600">Cotton, Regular Fit</p>
-      <p class="text-xl font-bold">₹499</p>
-      <a href="javascript:;" class="simpleCart_addItem mt-2 inline-block bg-blue-500 text-white px-4 py-2 rounded"
-         data-name="Classic T-Shirt"
-         data-price="499"
-         data-quantity="1">Add to Cart</a>
+    <div class="cart">
+      <h2>Your Cart</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Price</th>
+            <th>Qty</th>
+            <th>Subtotal</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="cart-body"></tbody>
+      </table>
+      <h3 id="total-price">Total: ₹0</h3>
     </div>
-    <!-- Duplicate the product block above for more items -->
+
+    <form action="https://formsubmit.co/YOUR_EMAIL@gmail.com" method="POST" class="checkout-form" onsubmit="return prepareOrder()">
+      <h2>Checkout</h2>
+      <input type="text" name="name" placeholder="Your Name" required />
+      <input type="email" name="email" placeholder="Your Email" required />
+      <textarea name="address" placeholder="Shipping Address" required></textarea>
+      <input type="hidden" name="order" id="order-details" />
+      <button type="submit">Place Order</button>
+    </form>
   </main>
 
-  <section class="p-4">
-    <h2 class="text-xl font-bold">Your Cart</h2>
-    <div class="simpleCart_items mt-4"></div>
-    <div class="mt-4">
-      <strong>Total: </strong><span class="simpleCart_total"></span>
-      <br><br>
-      <form method="POST" action="https://formsubmit.co/kuuberastore@gmail.com">
-        <input type="hidden" name="_subject" value="New Order from Clothing Website">
-        <input type="hidden" name="_next" value="https://yourdomain.com/thank-you.html">
-        <input type="text" name="Customer Name" placeholder="Your Name" required class="border p-2 mb-2 w-full">
-        <input type="text" name="Address" placeholder="Full Address" required class="border p-2 mb-2 w-full">
-        <input type="text" name="Phone" placeholder="Phone Number" required class="border p-2 mb-2 w-full">
-        <input type="submit" value="Place Order (COD)" class="bg-green-600 text-white px-4 py-2 rounded">
-      </form>
-    </div>
-  </section>
+  <script>
+    const products = [
+      { name: "Classic T-Shirt", price: 499 },
+      { name: "Denim Jeans", price: 999 },
+      { name: "Hoodie", price: 799 },
+      { name: "Summer Dress", price: 1199 }
+    ];
 
-  <footer class="bg-white text-center p-4 mt-8 shadow">
-    &copy; 2025 My Clothing Store. All rights reserved.
-  </footer>
+    let cart = [];
+
+    function renderProducts() {
+      const list = document.getElementById("product-list");
+      list.innerHTML = '';
+      products.forEach((product, index) => {
+        const item = document.createElement("div");
+        item.className = "product";
+        item.innerHTML = `
+          <h3>${product.name}</h3>
+          <p>₹${product.price}</p>
+          <button onclick="addToCart(${index})">Add to Cart</button>
+        `;
+        list.appendChild(item);
+      });
+    }
+
+    function addToCart(index) {
+      const product = products[index];
+      const existing = cart.find(item => item.name === product.name);
+      if (existing) {
+        existing.qty++;
+      } else {
+        cart.push({ ...product, qty: 1 });
+      }
+      renderCart();
+    }
+
+    function updateQty(index, qty) {
+      if (qty <= 0) return;
+      cart[index].qty = qty;
+      renderCart();
+    }
+
+    function removeFromCart(index) {
+      cart.splice(index, 1);
+      renderCart();
+    }
+
+    function renderCart() {
+      const tbody = document.getElementById("cart-body");
+      tbody.innerHTML = '';
+      if (cart.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" style="padding: 20px;">Your cart is empty.</td></tr>';
+        document.getElementById('total-price').textContent = 'Total: ₹0';
+        return;
+      }
+      let total = 0;
+      cart.forEach((item, i) => {
+        const subtotal = item.price * item.qty;
+        total += subtotal;
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${item.name}</td>
+          <td>₹${item.price.toFixed(2)}</td>
+          <td><input type="number" min="1" value="${item.qty}" onchange="updateQty(${i}, parseInt(this.value))" /></td>
+          <td>₹${subtotal.toFixed(2)}</td>
+          <td><button class="remove-btn" onclick="removeFromCart(${i})">&times;</button></td>
+        `;
+        tbody.appendChild(tr);
+      });
+      document.getElementById('total-price').textContent = `Total: ₹${total.toFixed(2)}`;
+    }
+
+    function prepareOrder() {
+      if(cart.length === 0) {
+        alert('Your cart is empty! Please add some products first.');
+        return false;
+      }
+      let orderText = 'Order Details:\n\n';
+      cart.forEach(item => {
+        orderText += `${item.name} - Qty: ${item.qty} - ₹${(item.price * item.qty).toFixed(2)}\n`;
+      });
+      orderText += `\nTotal: ₹${cart.reduce((sum, item) => sum + item.price * item.qty, 0).toFixed(2)}`;
+      document.getElementById('order-details').value = orderText;
+      return true;
+    }
+
+    renderProducts();
+    renderCart();
+  </script>
 </body>
 </html>
