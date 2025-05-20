@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Clothing Store</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/simplecart/3.0.6/simplecart.min.js"></script>
+  <script>
+    simpleCart({
+      cartColumns: [
+        { attr: "name", label: "Name" },
+        { attr: "price", label: "Price", view: 'currency' },
+        { view: "decrement", label: false, text: "-" },
+        { attr: "quantity", label: "Qty" },
+        { view: "increment", label: false, text: "+" },
+        { attr: "total", label: "SubTotal", view: 'currency' },
+        { view: "remove", text: "Remove", label: false }
+      ],
+      cartStyle: "table",
+      checkout: {
+        type: "SendForm",
+        url: "https://formsubmit.co/kuuberastore@gmail.com"
+      },
+      currency: "INR"
+    });
+  </script>
+</head>
+<body class="bg-gray-100 text-gray-800">
+  <header class="bg-white shadow p-4">
+    <h1 class="text-2xl font-bold text-center">My Clothing Store</h1>
+  </header>
+
+  <main class="p-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    <!-- Example Product -->
+    <div class="bg-white p-4 rounded shadow text-center">
+      <img src="https://via.placeholder.com/200" alt="T-Shirt" class="mx-auto mb-2">
+      <h2 class="font-semibold text-lg">Classic T-Shirt</h2>
+      <p class="text-gray-600">Cotton, Regular Fit</p>
+      <p class="text-xl font-bold">₹499</p>
+      <a href="javascript:;" class="simpleCart_addItem mt-2 inline-block bg-blue-500 text-white px-4 py-2 rounded"
+         data-name="Classic T-Shirt"
+         data-price="499"
+         data-quantity="1">Add to Cart</a>
+    </div>
+    <!-- Duplicate the product block above for more items -->
+  </main>
+
+  <section class="p-4">
+    <h2 class="text-xl font-bold">Your Cart</h2>
+    <div class="simpleCart_items mt-4"></div>
+    <div class="mt-4">
+      <strong>Total: </strong><span class="simpleCart_total"></span>
+      <br><br>
+      <form method="POST" action="https://formsubmit.co/kuuberastore@gmail.com">
+        <input type="hidden" name="_subject" value="New Order from Clothing Website">
+        <input type="hidden" name="_next" value="https://yourdomain.com/thank-you.html">
+        <input type="text" name="Customer Name" placeholder="Your Name" required class="border p-2 mb-2 w-full">
+        <input type="text" name="Address" placeholder="Full Address" required class="border p-2 mb-2 w-full">
+        <input type="text" name="Phone" placeholder="Phone Number" required class="border p-2 mb-2 w-full">
+        <input type="submit" value="Place Order (COD)" class="bg-green-600 text-white px-4 py-2 rounded">
+      </form>
+    </div>
+  </section>
+
+  <footer class="bg-white text-center p-4 mt-8 shadow">
+    &copy; 2025 My Clothing Store. All rights reserved.
+  </footer>
+</body>
+</html>
