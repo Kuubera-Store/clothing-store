@@ -8,36 +8,55 @@
     body {
       margin: 0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #f9f9f9;
+      background: #fdfcfa;
       color: #333;
     }
     header {
       background: #8e44ad;
       color: white;
-      padding: 20px;
+      padding: 30px 20px;
       text-align: center;
-      font-size: 1.5rem;
+      font-size: 2rem;
+      font-weight: bold;
+    }
+    .coming-soon {
+      background: #f1c40f;
+      color: #222;
+      text-align: center;
+      padding: 10px;
+      font-size: 1.2rem;
       font-weight: bold;
     }
     main {
-      padding: 20px;
-      max-width: 1000px;
+      padding: 30px 20px;
+      max-width: 1200px;
       margin: auto;
     }
     .product-list {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
     }
     .product {
       background: white;
       padding: 15px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
       text-align: center;
+      transition: transform 0.3s;
+    }
+    .product:hover {
+      transform: translateY(-5px);
+    }
+    .product img {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+      border-radius: 10px;
     }
     .product h3 {
-      margin: 10px 0;
+      margin: 15px 0 10px;
+      font-size: 1.3rem;
     }
     .product button {
       background: #8e44ad;
@@ -45,20 +64,18 @@
       border: none;
       padding: 10px 20px;
       border-radius: 20px;
-      cursor: pointer;
-      transition: background 0.3s;
+      font-size: 1rem;
+      opacity: 0.5;
+      cursor: not-allowed;
     }
-    .product button:hover {
-      background: #732d91;
-    }
-    .cart {
-      margin-top: 40px;
+    .cart, .checkout-form {
+      margin-top: 50px;
       background: #fff;
-      border-radius: 10px;
-      padding: 20px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      border-radius: 12px;
+      padding: 25px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
     }
-    .cart h2 {
+    .cart h2, .checkout-form h2 {
       margin-top: 0;
     }
     table {
@@ -70,20 +87,6 @@
       padding: 10px;
       border-bottom: 1px solid #ccc;
       text-align: center;
-    }
-    .remove-btn {
-      background: #e74c3c;
-      color: white;
-      border: none;
-      padding: 5px 10px;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    .remove-btn:hover {
-      background: #c0392b;
-    }
-    .checkout-form {
-      margin-top: 30px;
     }
     .checkout-form input, .checkout-form textarea {
       width: 100%;
@@ -100,17 +103,37 @@
       padding: 12px 25px;
       border-radius: 25px;
       font-size: 1rem;
-      cursor: pointer;
-    }
-    .checkout-form button:hover {
-      background: #732d91;
+      cursor: not-allowed;
+      opacity: 0.5;
     }
   </style>
 </head>
 <body>
   <header>Kuubera Store</header>
+  <div class="coming-soon">Coming Soon - Stay Tuned for Exclusive Collections!</div>
   <main>
-    <section class="product-list" id="product-list"></section>
+    <section class="product-list">
+      <div class="product">
+        <img src="https://images.unsplash.com/photo-1585386959984-a4155224a1e4?auto=format&fit=crop&w=800&q=80" alt="Indian Wear">
+        <h3>Indian Wear</h3>
+        <button disabled>Add to Cart</button>
+      </div>
+      <div class="product">
+        <img src="https://images.unsplash.com/photo-1602810316634-d6bbf5a3687a?auto=format&fit=crop&w=800&q=80" alt="Western Wear">
+        <h3>Western Wear</h3>
+        <button disabled>Add to Cart</button>
+      </div>
+      <div class="product">
+        <img src="https://images.unsplash.com/photo-1550948390-eb74dc162ebb?auto=format&fit=crop&w=800&q=80" alt="Indo-Western Wear">
+        <h3>Indo-Western Wear</h3>
+        <button disabled>Add to Cart</button>
+      </div>
+      <div class="product">
+        <img src="https://images.unsplash.com/photo-1541099649105-f69ad21f3246?auto=format&fit=crop&w=800&q=80" alt="Others">
+        <h3>Others</h3>
+        <button disabled>Add to Cart</button>
+      </div>
+    </section>
 
     <div class="cart">
       <h2>Your Cart</h2>
@@ -118,115 +141,23 @@
         <thead>
           <tr>
             <th>Product</th>
-            <th>Price</th>
             <th>Qty</th>
-            <th>Subtotal</th>
             <th>Action</th>
           </tr>
         </thead>
-        <tbody id="cart-body"></tbody>
+        <tbody>
+          <tr><td colspan="3">Cart feature coming soon.</td></tr>
+        </tbody>
       </table>
-      <h3 id="total-price">Total: ₹0</h3>
     </div>
 
-    <form action="https://formsubmit.co/kuuberastore@gmail.com" method="POST" class="checkout-form" onsubmit="return prepareOrder()">
+    <form action="#" method="POST" class="checkout-form">
       <h2>Checkout</h2>
-      <input type="text" name="name" placeholder="Your Name" required />
-      <input type="email" name="email" placeholder="Your Email" required />
-      <textarea name="address" placeholder="Shipping Address" required></textarea>
-      <input type="hidden" name="order" id="order-details" />
-      <button type="submit">Place Order</button>
+      <input type="text" name="name" placeholder="Your Name" disabled />
+      <input type="email" name="email" placeholder="Your Email" disabled />
+      <textarea name="address" placeholder="Shipping Address" disabled></textarea>
+      <button type="submit" disabled>Place Order</button>
     </form>
   </main>
-
-  <script>
-    const products = [
-      { name: "Classic T-Shirt", price: 499 },
-      { name: "Denim Jeans", price: 999 },
-      { name: "Hoodie", price: 799 },
-      { name: "Summer Dress", price: 1199 }
-    ];
-
-    let cart = [];
-
-    function renderProducts() {
-      const list = document.getElementById("product-list");
-      list.innerHTML = '';
-      products.forEach((product, index) => {
-        const item = document.createElement("div");
-        item.className = "product";
-        item.innerHTML = `
-          <h3>${product.name}</h3>
-          <p>₹${product.price}</p>
-          <button onclick="addToCart(${index})">Add to Cart</button>
-        `;
-        list.appendChild(item);
-      });
-    }
-
-    function addToCart(index) {
-      const product = products[index];
-      const existing = cart.find(item => item.name === product.name);
-      if (existing) {
-        existing.qty++;
-      } else {
-        cart.push({ ...product, qty: 1 });
-      }
-      renderCart();
-    }
-
-    function updateQty(index, qty) {
-      if (qty <= 0) return;
-      cart[index].qty = qty;
-      renderCart();
-    }
-
-    function removeFromCart(index) {
-      cart.splice(index, 1);
-      renderCart();
-    }
-
-    function renderCart() {
-      const tbody = document.getElementById("cart-body");
-      tbody.innerHTML = '';
-      if (cart.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="5" style="padding: 20px;">Your cart is empty.</td></tr>';
-        document.getElementById('total-price').textContent = 'Total: ₹0';
-        return;
-      }
-      let total = 0;
-      cart.forEach((item, i) => {
-        const subtotal = item.price * item.qty;
-        total += subtotal;
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td>${item.name}</td>
-          <td>₹${item.price.toFixed(2)}</td>
-          <td><input type="number" min="1" value="${item.qty}" onchange="updateQty(${i}, parseInt(this.value))" /></td>
-          <td>₹${subtotal.toFixed(2)}</td>
-          <td><button class="remove-btn" onclick="removeFromCart(${i})">&times;</button></td>
-        `;
-        tbody.appendChild(tr);
-      });
-      document.getElementById('total-price').textContent = `Total: ₹${total.toFixed(2)}`;
-    }
-
-    function prepareOrder() {
-      if(cart.length === 0) {
-        alert('Your cart is empty! Please add some products first.');
-        return false;
-      }
-      let orderText = 'Order Details:\n\n';
-      cart.forEach(item => {
-        orderText += `${item.name} - Qty: ${item.qty} - ₹${(item.price * item.qty).toFixed(2)}\n`;
-      });
-      orderText += `\nTotal: ₹${cart.reduce((sum, item) => sum + item.price * item.qty, 0).toFixed(2)}`;
-      document.getElementById('order-details').value = orderText;
-      return true;
-    }
-
-    renderProducts();
-    renderCart();
-  </script>
 </body>
 </html>
